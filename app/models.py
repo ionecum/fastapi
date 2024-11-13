@@ -29,7 +29,7 @@ class User(Base, SoftDeleteMixin, TimestampMixin):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
 
-    #posts = relationship("Post", back_populates="author")
+    posts = relationship("Post", back_populates="author")
 
 
 class Post(Base, SoftDeleteMixin, TimestampMixin):
@@ -39,9 +39,9 @@ class Post(Base, SoftDeleteMixin, TimestampMixin):
     content = Column(String)
     author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    #author = relationship("User", back_populates="posts")
-    #comments = relationship("Comment", back_populates="post")
-    #tags = relationship("Tag", secondary="post_tags", back_populates="posts")
+    author = relationship("User", back_populates="posts")
+    comments = relationship("Comment", back_populates="post")
+    tags = relationship("Tag", secondary="post_tags", back_populates="posts")
 
 
 class Comment(Base, SoftDeleteMixin, TimestampMixin):
@@ -50,7 +50,7 @@ class Comment(Base, SoftDeleteMixin, TimestampMixin):
     content = Column(String, nullable=False)
     post_id = Column(Integer, ForeignKey("posts.id"), nullable=False)
 
-    #post = relationship("Post", back_populates="comments")
+    post = relationship("Post", back_populates="comments")
 
 
 class Tag(Base, SoftDeleteMixin, TimestampMixin):
@@ -58,10 +58,10 @@ class Tag(Base, SoftDeleteMixin, TimestampMixin):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
 
-    #posts = relationship("Post", secondary="post_tags", back_populates="tags")
+    posts = relationship("Post", secondary="post_tags", back_populates="tags")
 
 
-""" class PostTag(Base):
+class PostTag(Base):
     __tablename__ = "post_tags"
     post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
-    tag_id = Column(Integer, ForeignKey("tags.id"), primary_key=True) """
+    tag_id = Column(Integer, ForeignKey("tags.id"), primary_key=True)
